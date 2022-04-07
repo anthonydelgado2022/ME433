@@ -50,9 +50,10 @@ int main() {
 
     // do your TRIS and LAT commands here
     TRISAbits.TRISA4 = 0;
-    LATAbits.LATA4 = 1;
+    LATAbits.LATA4 = 0;
     TRISBbits.TRISB4 = 1;
     //LATBbits.LATB4 = 0;
+    
 
     __builtin_enable_interrupts();
 
@@ -61,15 +62,16 @@ int main() {
         // remember the core timer runs at half the sysclk
         if (PORTBbits.RB4 == 0)
         {
+            LATAbits.LATA4 = 1;
             _CP0_SET_COUNT(0);
+            while(_CP0_GET_COUNT()< 12000000){}
             LATAbits.LATA4 = 0;
+            _CP0_SET_COUNT(0);
             while(_CP0_GET_COUNT()< 12000000){}
             LATAbits.LATA4 = 1;
             _CP0_SET_COUNT(0);
             while(_CP0_GET_COUNT()< 12000000){}
             LATAbits.LATA4 = 0;
-            while(_CP0_GET_COUNT()< 12000000){}
-            LATAbits.LATA4 = 1;
             _CP0_SET_COUNT(0);
             while(_CP0_GET_COUNT()< 12000000){}
         }
